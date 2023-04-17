@@ -14,20 +14,13 @@ const nodemailer = require("nodemailer");
 //adding password
 router.post("/api/addAdmin", async (req, res) => {
   const { username, password } = req.body;
-  var cipherUsername = CryptoJS.AES.encrypt(
-    username,
-    process.env.username
-  ).toString();
-
-  var cipherPassword = CryptoJS.AES.encrypt(
-    password,
-    process.env.password
-  ).toString();
-  const user = new passModal({
-    username: cipherUsername,
-    password: cipherPassword,
-  });
-  await user.save();
+  const admin = new passModal({ username, password });
+  try {
+    await admin.save();
+    res.send("added successfully");
+  } catch (error) {
+    res.status(500).send("unsuccessfull");
+  }
   res.send("hi");
 });
 router.post("/api/checkAdmin", async (req, res) => {
