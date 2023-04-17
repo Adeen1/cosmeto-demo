@@ -34,17 +34,7 @@ router.post("/api/checkAdmin", async (req, res) => {
   const { username, password } = req.body;
   const admins = await passModal.find();
   const single = admins[0];
-  var simpleUsername = CryptoJS.AES.decrypt(
-    single.username,
-    process.env.username
-  ).toString(CryptoJS.enc.Utf8);
-
-  var simplePassword = CryptoJS.AES.decrypt(
-    single.password,
-    process.env.password
-  ).toString(CryptoJS.enc.Utf8);
-  console.log(simplePassword, simpleUsername);
-  if (simpleUsername === username && simplePassword === password) {
+  if (single.username === username && single.password === password) {
     res.status(200).send(true);
   } else {
     res.status(200).send(false);
